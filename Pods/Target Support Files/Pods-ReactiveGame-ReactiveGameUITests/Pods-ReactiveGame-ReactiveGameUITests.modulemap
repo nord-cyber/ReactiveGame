@@ -1,0 +1,6 @@
+framework module Pods_ReactiveGame_ReactiveGameUITests {
+  umbrella header "Pods-ReactiveGame-ReactiveGameUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
