@@ -8,6 +8,6 @@
 import UIKit
 
 // hashable??
-struct TypeOfImage: Hashable, Decodable {
+struct TypeOfImage: Codable {
   let regular: String
 }

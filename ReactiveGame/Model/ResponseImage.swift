@@ -8,6 +8,6 @@
 import UIKit
 
 
-struct ResponseImage: Decodable {
+struct ResponseImage: Codable {
   let urls: TypeOfImage
 }

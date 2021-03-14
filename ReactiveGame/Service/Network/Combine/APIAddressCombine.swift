@@ -13,6 +13,7 @@ enum APIAddressWithCombine {
     static func APIRandomImageWithCombine() -> AnyPublisher<ResponseImage, GameErrors>  {
         
         let url = URL(string: "https://api.unsplash.com/photos/random/?client_id=\(Constants.accessToken)")!
+       
         
         // create config for session
         let config =  URLSessionConfiguration.default

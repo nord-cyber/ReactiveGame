@@ -23,6 +23,8 @@
 		0970A58125FBDB07006F1A7C /* DownloadImageCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0970A58025FBDB07006F1A7C /* DownloadImageCombine.swift */; };
 		0970A58625FBDE48006F1A7C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0970A58525FBDE48006F1A7C /* Constants.swift */; };
 		0970A58F25FBDFD3006F1A7C /* GameErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0970A58E25FBDFD3006F1A7C /* GameErrors.swift */; };
+		0970A62625FE19BD006F1A7C /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0970A62525FE19BC006F1A7C /* API.swift */; };
+		0970A62B25FEB74F006F1A7C /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0970A62A25FEB74E006F1A7C /* APIClient.swift */; };
 		3204742B7C684651D6F68A49 /* Pods_ReactiveGame_ReactiveGameUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B99FC9DC9779552BB2097D /* Pods_ReactiveGame_ReactiveGameUITests.framework */; };
 		526CB139C0695CAA7BFFA863 /* Pods_ReactiveGame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC2F7E55E829FD9F284A5FFA /* Pods_ReactiveGame.framework */; };
 		C772A8CB3860AD4364ADA6B5 /* Pods_ReactiveGameTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BB6CA251CC98CA92220D0C /* Pods_ReactiveGameTests.framework */; };
@@ -68,6 +70,8 @@
 		0970A58025FBDB07006F1A7C /* DownloadImageCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadImageCombine.swift; sourceTree = "<group>"; };
 		0970A58525FBDE48006F1A7C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0970A58E25FBDFD3006F1A7C /* GameErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameErrors.swift; sourceTree = "<group>"; };
+		0970A62525FE19BC006F1A7C /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		0970A62A25FEB74E006F1A7C /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		33BB6CA251CC98CA92220D0C /* Pods_ReactiveGameTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactiveGameTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44135F6BE4F93DDB309C5526 /* Pods-ReactiveGame-ReactiveGameUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveGame-ReactiveGameUITests.release.xcconfig"; path = "Target Support Files/Pods-ReactiveGame-ReactiveGameUITests/Pods-ReactiveGame-ReactiveGameUITests.release.xcconfig"; sourceTree = "<group>"; };
 		66B99FC9DC9779552BB2097D /* Pods_ReactiveGame_ReactiveGameUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactiveGame_ReactiveGameUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,8 +238,10 @@
 		0970A57925FBDAAA006F1A7C /* RxSwift */ = {
 			isa = PBXGroup;
 			children = (
+				0970A62A25FEB74E006F1A7C /* APIClient.swift */,
 				0970A55625FBD4D8006F1A7C /* APIAddress.swift */,
 				0970A55E25FBD4EC006F1A7C /* DownloadImage.swift */,
+				0970A62525FE19BC006F1A7C /* API.swift */,
 			);
 			path = RxSwift;
 			sourceTree = "<group>";
@@ -527,7 +533,9 @@
 				0970A58625FBDE48006F1A7C /* Constants.swift in Sources */,
 				0970A4FD25F76A9C006F1A7C /* SceneDelegate.swift in Sources */,
 				0970A55F25FBD4EC006F1A7C /* DownloadImage.swift in Sources */,
+				0970A62B25FEB74F006F1A7C /* APIClient.swift in Sources */,
 				0970A55725FBD4D8006F1A7C /* APIAddress.swift in Sources */,
+				0970A62625FE19BD006F1A7C /* API.swift in Sources */,
 				0970A57C25FBDAF4006F1A7C /* APIAddressCombine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
