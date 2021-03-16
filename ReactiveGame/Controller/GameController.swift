@@ -10,15 +10,12 @@ import Combine
 import RxSwift
 import RxCocoa
 
-enum StatusGame {
-    case play
-    case stop
-}
+
 
 
 final class GameController: UIViewController {
     var subscriptions: Set<AnyCancellable> = []
-   var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     var gameImages = [UIImage]()
     var gameStatus:StatusGame = .stop {
         didSet {
@@ -39,11 +36,15 @@ final class GameController: UIViewController {
     @IBOutlet var statusButton: UIButton!
     @IBOutlet var level:UILabel!
     @IBOutlet var score:UILabel!
+    @IBOutlet var activityIndicator: [UIActivityIndicatorView]!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        images.forEach { $0.backgroundColor = #colorLiteral(red: 0.5277996063, green: 0.7460211515, blue: 0.6274777651, alpha: 1)}
+        images.forEach { $0.backgroundColor = .clear
+            $0.contentMode = .scaleAspectFill
+        }
+        activityIndicator.forEach { $0.isHidden = true }
     }
     
     
@@ -53,11 +54,24 @@ final class GameController: UIViewController {
     
 
     @IBAction func tapImageButton(_ sender: UIButton) {
-        print("hey! \(sender.tag)")
+       
+       let selectedImage = gameImages.filter { $0 == gameImages[sender.tag] }
+        if selectedImage.count == 1 {
+           gameStatus = StatusGame.play
+        } else {
+            gameStatus = StatusGame.stop
+        }
+        
     }
     
     
     func playInGame() {
+        images.forEach{ $0.image = nil}
+        activityIndicator.forEach { indicator in
+            indicator.isHidden = false
+            indicator.startAnimating()
+            indicator.hidesWhenStopped = true
+        }
         statusButton.setTitle("Stop", for: .normal)
         
         counterLevel += 1
@@ -84,7 +98,9 @@ final class GameController: UIViewController {
    fileprivate func setImagesInIcons() {
       if gameImages.count == 4 {
         for (index, gameImage) in gameImages.enumerated() {
-          images[index].image = gameImage
+            activityIndicator[index].stopAnimating()
+            activityIndicator[index].isHidden = true
+            images[index].image = gameImage
         }
       }
     }
@@ -92,7 +108,6 @@ final class GameController: UIViewController {
     fileprivate  func stopGame() {
         statusButton.setTitle("Start", for: .normal)
         
-        images.forEach { $0.backgroundColor = #colorLiteral(red: 0.5277996063, green: 0.7460211515, blue: 0.6274777651, alpha: 1)}
         images.forEach{ $0.image = nil}
         counterLevel = 0
         counterScore = 0
@@ -105,14 +120,13 @@ final class GameController: UIViewController {
    
 }
 
-// MARK: BUG WITH IMAGES
 extension GameController {
+    
     //MARK: RX
     fileprivate func getImageRx() {
      
         let subject = PublishSubject<UIImage>()
         
-       
         var firstImage:UIImage!
         getImageFromRx { (image) in
             firstImage = image
@@ -123,15 +137,19 @@ extension GameController {
             secondImage = image
             subject.onNext(secondImage)
         }
-       
+      
        _ = subject.subscribe { [unowned self] (_) in
-            if firstImage != nil , secondImage != nil {
-                self.shuffledImage(first: firstImage, second: secondImage)
-                subject.disposed(by: self.disposeBag)
+            if firstImage != nil && secondImage != nil {
+                if firstImage != secondImage {
+                    self.shuffledImage(first: firstImage, second: secondImage)
+                } else {
+                    self.getImageFromRx { (image) in
+                        secondImage = image
+                        subject.onNext(secondImage)
+                    }
+                }
             }
-        }
-        
-
+       }.disposed(by: disposeBag)
     }
     
     fileprivate func getImageFromRx(completionHandler:@escaping ((UIImage)->())) {
@@ -145,14 +163,10 @@ extension GameController {
                         .subscribe { image in
                             guard let image = image.element else { return }
                             completionHandler(image)
-                            
-                            
-                        }
-                }
+                        }.disposed(by: self.disposeBag)
+                }.disposed(by: disposeBag)
     }
 
-    
-    
     //MARK: Combine
     fileprivate func getImageCombine() {
         let notDifferentImage = APIAddressWithCombine.APIRandomImageWithCombine().flatMap { responseImage in
@@ -176,7 +190,7 @@ extension GameController {
                 self.gameImages = [first,second, second, second].shuffled()
                 self.score.text = "Score: \(self.counterScore)"
     
-                //TODO: handling game score
+               
                 self.setImagesInIcons()
             }
             .store(in: &subscriptions)
