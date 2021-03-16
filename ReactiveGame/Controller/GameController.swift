@@ -18,7 +18,7 @@ enum StatusGame {
 
 final class GameController: UIViewController {
     var subscriptions: Set<AnyCancellable> = []
-   
+   var disposeBag = DisposeBag()
     var gameImages = [UIImage]()
     var gameStatus:StatusGame = .stop {
         didSet {
@@ -110,26 +110,28 @@ extension GameController {
     //MARK: RX
     fileprivate func getImageRx() {
      
+        let subject = PublishSubject<UIImage>()
+        
+       
         var firstImage:UIImage!
         getImageFromRx { (image) in
             firstImage = image
+            subject.onNext(firstImage)
         }
         var secondImage:UIImage!
         getImageFromRx { (image) in
             secondImage = image
+            subject.onNext(secondImage)
+        }
+       
+       _ = subject.subscribe { [unowned self] (_) in
+            if firstImage != nil , secondImage != nil {
+                self.shuffledImage(first: firstImage, second: secondImage)
+                subject.disposed(by: self.disposeBag)
+            }
         }
         
-        
-        
-//       Observable<UIImage?>.from([firstImage,secondImage])
-//            .throttle(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
-//            .subscribe { (event) in
-//                if firstImage != nil, secondImage != nil {
-//                    self.shuffledImage(first: firstImage, second: secondImage)
-//                }
-//            }
-        
-        
+
     }
     
     fileprivate func getImageFromRx(completionHandler:@escaping ((UIImage)->())) {
@@ -143,6 +145,7 @@ extension GameController {
                         .subscribe { image in
                             guard let image = image.element else { return }
                             completionHandler(image)
+                            
                             
                         }
                 }
